@@ -112,7 +112,7 @@ func (s *ExtentStateMonitorSuite) TearDownTest() {
 
 func (s *ExtentStateMonitorSuite) createDestination(name string) (*shared.DestinationDescription, error) {
 	mReq := &shared.CreateDestinationRequest{
-		Path: common.StringPtr(name),
+		Path:                        common.StringPtr(name),
 		ConsumedMessagesRetention:   common.Int32Ptr(300),
 		UnconsumedMessagesRetention: common.Int32Ptr(600),
 		OwnerEmail:                  common.StringPtr("test@uber.com"),
@@ -444,8 +444,8 @@ func (s *ExtentStateMonitorSuite) TestExtentMonitorKafka() {
 		// create Kafka destination
 		path := s.generateName("/test/extent.mon/dest-kafka-" + strconv.Itoa(i))
 		mReq := &shared.CreateDestinationRequest{
-			Path: common.StringPtr(path),
-			Type: common.InternalDestinationTypePtr(shared.DestinationType_KAFKA),
+			Path:                        common.StringPtr(path),
+			Type:                        common.InternalDestinationTypePtr(shared.DestinationType_KAFKA),
 			ConsumedMessagesRetention:   common.Int32Ptr(300),
 			UnconsumedMessagesRetention: common.Int32Ptr(600),
 			OwnerEmail:                  common.StringPtr("test@uber.com"),

@@ -210,8 +210,8 @@ func (s *McpSuite) createDestinationImpl(name string, dstType shared.Destination
 		}
 	}
 	mReq := &shared.CreateDestinationRequest{
-		Path: common.StringPtr(name),
-		Type: common.InternalDestinationTypePtr(dstType),
+		Path:                        common.StringPtr(name),
+		Type:                        common.InternalDestinationTypePtr(dstType),
 		ConsumedMessagesRetention:   common.Int32Ptr(300),
 		UnconsumedMessagesRetention: common.Int32Ptr(600),
 		OwnerEmail:                  common.StringPtr("test@email.com"),

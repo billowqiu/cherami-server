@@ -98,8 +98,8 @@ func (s *NetIntegrationSuiteParallelG) TestKafkaForCherami() {
 
 	// create cherami kfc destination
 	destDesc, err := cheramiClient.CreateDestination(&cherami.CreateDestinationRequest{
-		Path: common.StringPtr(destPath),
-		Type: cherami.DestinationTypePtr(cherami.DestinationType_KAFKA),
+		Path:                        common.StringPtr(destPath),
+		Type:                        cherami.DestinationTypePtr(cherami.DestinationType_KAFKA),
 		ConsumedMessagesRetention:   common.Int32Ptr(60),
 		UnconsumedMessagesRetention: common.Int32Ptr(120),
 		ChecksumOption:              cherami.ChecksumOption_CRC32IEEE,

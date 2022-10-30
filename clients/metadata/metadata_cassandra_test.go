@@ -153,8 +153,8 @@ func (s *CassandraSuite) Alter() error {
 
 func createDestination(s *CassandraSuite, path string, dlqDestination bool) (*shared.DestinationDescription, error) {
 	createReq := &shared.CreateDestinationRequest{
-		Path: common.StringPtr(path),
-		Type: common.InternalDestinationTypePtr(shared.DestinationType_PLAIN),
+		Path:                        common.StringPtr(path),
+		Type:                        common.InternalDestinationTypePtr(shared.DestinationType_PLAIN),
 		ConsumedMessagesRetention:   common.Int32Ptr(1800),
 		UnconsumedMessagesRetention: common.Int32Ptr(3600),
 		OwnerEmail:                  common.StringPtr(destinationOwnerEmail),
@@ -188,8 +188,8 @@ func (s *CassandraSuite) TestDestinationCRUD() {
 			RemoteExtentReplicaNum: common.Int32Ptr(2),
 		}
 		createDestination := &shared.CreateDestinationRequest{
-			Path: common.StringPtr(path),
-			Type: common.InternalDestinationTypePtr(shared.DestinationType_PLAIN),
+			Path:                        common.StringPtr(path),
+			Type:                        common.InternalDestinationTypePtr(shared.DestinationType_PLAIN),
 			ConsumedMessagesRetention:   common.Int32Ptr(1800),
 			UnconsumedMessagesRetention: common.Int32Ptr(3600),
 			OwnerEmail:                  common.StringPtr(destinationOwnerEmail),
@@ -291,8 +291,8 @@ func (s *CassandraSuite) TestDestinationCRUD() {
 
 		// Update
 		updateDestination := &shared.UpdateDestinationRequest{
-			DestinationUUID: common.StringPtr(destination.GetDestinationUUID()),
-			Status:          common.InternalDestinationStatusPtr(shared.DestinationStatus_RECEIVEONLY),
+			DestinationUUID:             common.StringPtr(destination.GetDestinationUUID()),
+			Status:                      common.InternalDestinationStatusPtr(shared.DestinationStatus_RECEIVEONLY),
 			ConsumedMessagesRetention:   common.Int32Ptr(30),
 			UnconsumedMessagesRetention: common.Int32Ptr(60),
 			OwnerEmail:                  common.StringPtr("lhc@uber.com")}
@@ -450,8 +450,8 @@ func (s *CassandraSuite) TestListDestinations() {
 	// Create baz-# destinations
 	for i := 0; i < count; i++ {
 		createDestination := &shared.CreateDestinationRequest{
-			Path: common.StringPtr(s.generateName(fmt.Sprintf("foolist/baz-%v", i))),
-			Type: common.InternalDestinationTypePtr(shared.DestinationType_PLAIN),
+			Path:                        common.StringPtr(s.generateName(fmt.Sprintf("foolist/baz-%v", i))),
+			Type:                        common.InternalDestinationTypePtr(shared.DestinationType_PLAIN),
 			ConsumedMessagesRetention:   common.Int32Ptr(50),
 			UnconsumedMessagesRetention: common.Int32Ptr(100),
 			OwnerEmail:                  common.StringPtr(destinationOwnerEmail),
@@ -465,8 +465,8 @@ func (s *CassandraSuite) TestListDestinations() {
 	// Create bar-# destinations
 	for i := 0; i < count; i++ {
 		createDestination := &shared.CreateDestinationRequest{
-			Path: common.StringPtr(s.generateName(fmt.Sprintf("foolist/bar-%v", i))),
-			Type: common.InternalDestinationTypePtr(shared.DestinationType_PLAIN),
+			Path:                        common.StringPtr(s.generateName(fmt.Sprintf("foolist/bar-%v", i))),
+			Type:                        common.InternalDestinationTypePtr(shared.DestinationType_PLAIN),
 			ConsumedMessagesRetention:   common.Int32Ptr(800),
 			UnconsumedMessagesRetention: common.Int32Ptr(1600),
 			OwnerEmail:                  common.StringPtr(destinationOwnerEmail),
@@ -574,8 +574,8 @@ func (s *CassandraSuite) TestListDestinationsByUUID() {
 		}
 
 		createDestination := &shared.CreateDestinationRequest{
-			Path: common.StringPtr(s.generateName(fmt.Sprintf("%v-%v", destPrefix, i))),
-			Type: common.InternalDestinationTypePtr(shared.DestinationType_PLAIN),
+			Path:                        common.StringPtr(s.generateName(fmt.Sprintf("%v-%v", destPrefix, i))),
+			Type:                        common.InternalDestinationTypePtr(shared.DestinationType_PLAIN),
 			ConsumedMessagesRetention:   common.Int32Ptr(800),
 			UnconsumedMessagesRetention: common.Int32Ptr(1600),
 			OwnerEmail:                  common.StringPtr(destinationOwnerEmail),
@@ -594,7 +594,7 @@ func (s *CassandraSuite) TestListDestinationsByUUID() {
 
 	// ListDestinationsByUUID
 	listDestinations := &shared.ListDestinationsByUUIDRequest{
-		Limit: common.Int64Ptr(testPageSize),
+		Limit:                    common.Int64Ptr(testPageSize),
 		ValidateAgainstPathTable: common.BoolPtr(true),
 	}
 	var result []*shared.DestinationDescription
@@ -624,7 +624,7 @@ func (s *CassandraSuite) TestListDestinationsByUUID() {
 	listDestinations = &shared.ListDestinationsByUUIDRequest{
 		MultiZoneOnly:            common.BoolPtr(true),
 		ValidateAgainstPathTable: common.BoolPtr(true),
-		Limit: common.Int64Ptr(testPageSize),
+		Limit:                    common.Int64Ptr(testPageSize),
 	}
 	result = nil
 	for {
@@ -662,8 +662,8 @@ func (s *CassandraSuite) TestExtentCRU() {
 
 	cDest := func(path string) *shared.DestinationDescription {
 		createDestination := &shared.CreateDestinationRequest{
-			Path: common.StringPtr(path),
-			Type: common.InternalDestinationTypePtr(shared.DestinationType_PLAIN),
+			Path:                        common.StringPtr(path),
+			Type:                        common.InternalDestinationTypePtr(shared.DestinationType_PLAIN),
 			ConsumedMessagesRetention:   common.Int32Ptr(1800),
 			UnconsumedMessagesRetention: common.Int32Ptr(3600),
 			OwnerEmail:                  common.StringPtr(destinationOwnerEmail),
@@ -1307,8 +1307,8 @@ func (s *CassandraSuite) assertReplicaStatsEqual(a, b *shared.ExtentReplicaStats
 func (s *CassandraSuite) TestReadExtentByUUID() {
 	// Create
 	createDestination := &shared.CreateDestinationRequest{
-		Path: common.StringPtr(s.generateName("readextentbyuuid/readextentbyuuid")),
-		Type: common.InternalDestinationTypePtr(shared.DestinationType_PLAIN),
+		Path:                        common.StringPtr(s.generateName("readextentbyuuid/readextentbyuuid")),
+		Type:                        common.InternalDestinationTypePtr(shared.DestinationType_PLAIN),
 		ConsumedMessagesRetention:   common.Int32Ptr(1800),
 		UnconsumedMessagesRetention: common.Int32Ptr(3600),
 		OwnerEmail:                  common.StringPtr(destinationOwnerEmail),
@@ -1356,8 +1356,8 @@ func (s *CassandraSuite) TestListExtents() {
 	// foo/bar 42 inputHost1, 40 inputHost2, 8 inputHost3
 	// foo/baz 40 inputHost1, 50 inputHost2
 	createDestination := &shared.CreateDestinationRequest{
-		Path: common.StringPtr(s.generateName("foo/bar")),
-		Type: common.InternalDestinationTypePtr(shared.DestinationType_PLAIN),
+		Path:                        common.StringPtr(s.generateName("foo/bar")),
+		Type:                        common.InternalDestinationTypePtr(shared.DestinationType_PLAIN),
 		ConsumedMessagesRetention:   common.Int32Ptr(1800),
 		UnconsumedMessagesRetention: common.Int32Ptr(3600),
 		OwnerEmail:                  common.StringPtr(destinationOwnerEmail),
@@ -1405,8 +1405,8 @@ func (s *CassandraSuite) TestListExtents() {
 	}
 
 	createDestination = &shared.CreateDestinationRequest{
-		Path: common.StringPtr(s.generateName("foo/baz")),
-		Type: common.InternalDestinationTypePtr(shared.DestinationType_TIMER),
+		Path:                        common.StringPtr(s.generateName("foo/baz")),
+		Type:                        common.InternalDestinationTypePtr(shared.DestinationType_TIMER),
 		ConsumedMessagesRetention:   common.Int32Ptr(150),
 		UnconsumedMessagesRetention: common.Int32Ptr(300),
 		OwnerEmail:                  common.StringPtr(destinationOwnerEmail),
@@ -1581,8 +1581,8 @@ func (s *CassandraSuite) TestListExtents() {
 func (s *CassandraSuite) TestExtentReplicaStatsRUD() {
 	// Create
 	createDestination := &shared.CreateDestinationRequest{
-		Path: common.StringPtr(s.generateName("foo/bar")),
-		Type: common.InternalDestinationTypePtr(shared.DestinationType_PLAIN),
+		Path:                        common.StringPtr(s.generateName("foo/bar")),
+		Type:                        common.InternalDestinationTypePtr(shared.DestinationType_PLAIN),
 		ConsumedMessagesRetention:   common.Int32Ptr(1800),
 		UnconsumedMessagesRetention: common.Int32Ptr(3600),
 		OwnerEmail:                  common.StringPtr(destinationOwnerEmail),

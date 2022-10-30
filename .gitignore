@@ -10,6 +10,7 @@
 *.pyc
 .pyenv
 test.log
+*_test.log
 *~
 .tmp
 .generated

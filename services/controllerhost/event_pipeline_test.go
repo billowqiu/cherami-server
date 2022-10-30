@@ -496,7 +496,7 @@ func (s *EventPipelineSuite) TestRetryableExecutor() {
 
 func (s *EventPipelineSuite) createDestination(name string) (*shared.DestinationDescription, error) {
 	mReq := &shared.CreateDestinationRequest{
-		Path: common.StringPtr(name),
+		Path:                        common.StringPtr(name),
 		ConsumedMessagesRetention:   common.Int32Ptr(300),
 		UnconsumedMessagesRetention: common.Int32Ptr(600),
 		OwnerEmail:                  common.StringPtr("test@uber.com"),
@@ -684,7 +684,7 @@ type MockInputOutputService struct {
 
 func NewMockInputOutputService(name string) *MockInputOutputService {
 	return &MockInputOutputService{
-		name: name,
+		name:                  name,
 		drainExtentsRcvdCount: make(map[string]int),
 		keyToUpdateCount:      make(map[string]int),
 		drainExtentsToFail:    make(map[string]struct{}),

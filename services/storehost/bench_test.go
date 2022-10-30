@@ -116,9 +116,9 @@ func (t *inputhostStreamMock) Read() (*store.AppendMessage, error) {
 				SequenceNumber: common.Int64Ptr(int64(t.seqNum)),
 				EnqueueTimeUtc: common.Int64Ptr(time.Now().UnixNano()),
 				Payload: &cherami.PutMessage{
-					ID: common.StringPtr(fmt.Sprintf("%08X", t.seqNum)),
+					ID:                    common.StringPtr(fmt.Sprintf("%08X", t.seqNum)),
 					DelayMessageInSeconds: common.Int32Ptr(t.minRandDelay + r.Int31n(t.maxRandDelay-t.minRandDelay+1)),
-					Data: data,
+					Data:                  data,
 				},
 			}
 
@@ -385,9 +385,9 @@ func benchmarkByDataSize(b *testing.B, dataSize int) {
 				SequenceNumber: common.Int64Ptr(int64(t.seqNum)),
 				EnqueueTimeUtc: common.Int64Ptr(enqueueTime),
 				Payload: &cherami.PutMessage{
-					ID: common.StringPtr(fmt.Sprintf("%08X", t.seqNum)),
+					ID:                    common.StringPtr(fmt.Sprintf("%08X", t.seqNum)),
 					DelayMessageInSeconds: common.Int32Ptr(int32(delayMsg)),
-					Data: data,
+					Data:                  data,
 				},
 			}
 
@@ -493,9 +493,9 @@ func benchmarkParallelExtents(b *testing.B, dataSize int, numExtents int) {
 				SequenceNumber: common.Int64Ptr(int64(t.seqNum)),
 				EnqueueTimeUtc: common.Int64Ptr(enqueueTime),
 				Payload: &cherami.PutMessage{
-					ID: common.StringPtr(fmt.Sprintf("%08d", t.seqNum)),
+					ID:                    common.StringPtr(fmt.Sprintf("%08d", t.seqNum)),
 					DelayMessageInSeconds: common.Int32Ptr(int32(delayMsg)),
-					Data: data,
+					Data:                  data,
 				},
 			}
 

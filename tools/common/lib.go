@@ -167,10 +167,10 @@ func newGlobalOptionsFromCLIContext(c *cli.Context) *GlobalOptions {
 	return &GlobalOptions{
 		hyperbahn:              c.GlobalBool("hyperbahn"),
 		hyperbahnBootstrapFile: c.GlobalString("hyperbahn_bootstrap_file"),
-		env:          environment,
-		frontendHost: host,
-		frontendPort: port,
-		timeoutSecs:  c.GlobalInt("timeout"),
+		env:                    environment,
+		frontendHost:           host,
+		frontendPort:           port,
+		timeoutSecs:            c.GlobalInt("timeout"),
 	}
 }
 
@@ -302,8 +302,8 @@ func CreateDestinationSecure(
 	}
 
 	desc, err := cClient.CreateDestination(&cherami.CreateDestinationRequest{
-		Path: &path,
-		Type: &dType,
+		Path:                        &path,
+		Type:                        &dType,
 		ConsumedMessagesRetention:   &consumedMessagesRetention,
 		UnconsumedMessagesRetention: &unconsumedMessagesRetention,
 		ChecksumOption:              checksumOption,
@@ -394,7 +394,7 @@ func UpdateDestinationSecure(
 	setCount := 0
 
 	request := &cherami.UpdateDestinationRequest{
-		Path: &path,
+		Path:                        &path,
 		ConsumedMessagesRetention:   getIfSetInt32(c, `consumed_messages_retention`, &setCount),
 		UnconsumedMessagesRetention: getIfSetInt32(c, `unconsumed_messages_retention`, &setCount),
 		ZoneConfigs:                 getIfSetDestZoneConfig(c, &setCount, cliHelper),

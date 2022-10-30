@@ -118,7 +118,7 @@ var _ serverStream.BStoreOpenReadStreamInCall = (*OpenReadInWebsocketStream)(nil
 // NewWSConnector creates a WSConnector
 func NewWSConnector() WSConnector {
 	return &wsConnectorImpl{
-		wsHub: websocket.NewWebsocketHub(),
+		wsHub:                          websocket.NewWebsocketHub(),
 		openPublisherOutStreamReadType: reflect.TypeOf((*cherami.InputHostCommand)(nil)).Elem(),
 		openPublisherInStreamReadType:  reflect.TypeOf((*cherami.PutMessage)(nil)).Elem(),
 		openConsumerOutStreamReadType:  reflect.TypeOf((*cherami.OutputHostCommand)(nil)).Elem(),

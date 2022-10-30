@@ -552,10 +552,10 @@ func (s *CassandraMetadataService) CreateDestinationUUID(ctx thrift.Context, uui
 		marshalRequest(request))
 
 	return &shared.DestinationDescription{
-		DestinationUUID: common.StringPtr(destinationUUID),
-		Path:            common.StringPtr(request.GetPath()),
-		Type:            common.InternalDestinationTypePtr(request.GetType()),
-		Status:          common.InternalDestinationStatusPtr(shared.DestinationStatus_ENABLED),
+		DestinationUUID:             common.StringPtr(destinationUUID),
+		Path:                        common.StringPtr(request.GetPath()),
+		Type:                        common.InternalDestinationTypePtr(request.GetType()),
+		Status:                      common.InternalDestinationStatusPtr(shared.DestinationStatus_ENABLED),
 		ConsumedMessagesRetention:   common.Int32Ptr(request.GetConsumedMessagesRetention()),
 		UnconsumedMessagesRetention: common.Int32Ptr(request.GetUnconsumedMessagesRetention()),
 		OwnerEmail:                  common.StringPtr(request.GetOwnerEmail()),

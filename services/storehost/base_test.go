@@ -565,9 +565,9 @@ func newAppendMessage(seqNum, delay, dataSize int, r *rand.Rand) *store.AppendMe
 		SequenceNumber: common.Int64Ptr(int64(seqNum)),
 		EnqueueTimeUtc: common.Int64Ptr(time.Now().UnixNano()),
 		Payload: &cherami.PutMessage{
-			ID: common.StringPtr(fmt.Sprintf("ID%08X", seqNum)),
+			ID:                    common.StringPtr(fmt.Sprintf("ID%08X", seqNum)),
 			DelayMessageInSeconds: common.Int32Ptr(int32(delay)),
-			Data: randBuf[randBufOffs : randBufOffs+dataSize],
+			Data:                  randBuf[randBufOffs : randBufOffs+dataSize],
 		},
 	}
 }

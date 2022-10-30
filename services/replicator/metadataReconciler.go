@@ -256,8 +256,8 @@ func (r *metadataReconciler) reconcileDest(localDests []*shared.DestinationDescr
 			}
 			createRequest := &shared.CreateDestinationUUIDRequest{
 				Request: &shared.CreateDestinationRequest{
-					Path: common.StringPtr(remoteDest.GetPath()),
-					Type: common.InternalDestinationTypePtr(remoteDest.GetType()),
+					Path:                        common.StringPtr(remoteDest.GetPath()),
+					Type:                        common.InternalDestinationTypePtr(remoteDest.GetType()),
 					ConsumedMessagesRetention:   common.Int32Ptr(remoteDest.GetConsumedMessagesRetention()),
 					UnconsumedMessagesRetention: common.Int32Ptr(remoteDest.GetUnconsumedMessagesRetention()),
 					OwnerEmail:                  common.StringPtr(remoteDest.GetOwnerEmail()),
@@ -482,7 +482,7 @@ func (r *metadataReconciler) getAllMultiZoneDestInLocalZone() ([]*shared.Destina
 	listReq := &shared.ListDestinationsByUUIDRequest{
 		MultiZoneOnly:            common.BoolPtr(true),
 		ValidateAgainstPathTable: common.BoolPtr(true),
-		Limit: common.Int64Ptr(metadataListRequestPageSize),
+		Limit:                    common.Int64Ptr(metadataListRequestPageSize),
 	}
 
 	var dests []*shared.DestinationDescription
@@ -520,7 +520,7 @@ func (r *metadataReconciler) getAllMultiZoneDestInAuthoritativeZone() ([]*shared
 	listReq := &shared.ListDestinationsByUUIDRequest{
 		MultiZoneOnly:            common.BoolPtr(true),
 		ValidateAgainstPathTable: common.BoolPtr(true),
-		Limit: common.Int64Ptr(metadataListRequestPageSize),
+		Limit:                    common.Int64Ptr(metadataListRequestPageSize),
 	}
 
 	var dests []*shared.DestinationDescription
