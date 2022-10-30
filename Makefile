@@ -5,8 +5,6 @@ SHELL = /bin/bash
 PROJECT_ROOT=github.com/uber/cherami-server
 INTEG_TEST_ROOT=./test
 TOOLS_ROOT=./tools
-export GO15VENDOREXPERIMENT=1
-NOVENDOR = $(shell GO15VENDOREXPERIMENT=1 glide novendor)
 TEST_ARG ?= -race -v -timeout 5m
 TEST_NO_RACE_ARG ?= -timeout 5m
 BUILD := ./build
@@ -50,14 +48,20 @@ INTEG_TEST_DIRS := $(filter $(INTEG_TEST_ROOT)%,$(ALL_TEST_DIRS))
 #   Packages are specified as import paths.
 GOCOVERPKG_ARG := -coverpkg="$(PROJECT_ROOT)/common/...,$(PROJECT_ROOT)/services/...,$(PROJECT_ROOT)/clients/..."
 
+CGO_CFLAGS="-I/usr/local/include"
+CGO_LDFLAGS="-L/usr/local/lib -lrocksdb -lstdc++ -lm -lz -lbz2 -lsnappy -llz4 -lzstd"
+
+GOBUILD=CGO_CFLAGS=$(CGO_CFLAGS) CGO_LDFLAGS=$(CGO_LDFLAGS) CGO_ENABLED=1 go build
+GOTEST=CGO_CFLAGS=$(CGO_CFLAGS) CGO_LDFLAGS=$(CGO_LDFLAGS) CGO_ENABLED=1 go test 
+
 test: lint bins
 	@for dir in $(ALL_TEST_DIRS); do \
-		go test $(EMBED) "$$dir" $(TEST_NO_RACE_ARG) $(shell glide nv); \
+		$(GOTEST) "$$dir" $(TEST_NO_RACE_ARG) $(shell glide nv); \
 	done;
 
 test-race: $(ALL_SRC)
 	@for dir in $(ALL_TEST_DIRS); do \
-		go test $(EMBED) "$$dir" $(TEST_ARG) | tee -a "$$dir"_test.log; \
+		$(GOTEST) "$$dir" $(TEST_ARG) | tee -a "$$dir"_test.log; \
 	done;	       
 
 checkcassandra:
@@ -66,38 +70,33 @@ checkcassandra:
 		exit 1; \
 	fi
 
-vendor/glide.updated: glide.lock glide.yaml
-	glide install
-	touch vendor/glide.updated
-
-DEPS = vendor/glide.updated $(ALL_SRC)
 
 cherami-server: $(DEPS)
-	go build -i $(EMBED) -o cherami-server cmd/standalone/main.go
+	$(GOBUILD) -o cherami-server cmd/standalone/main.go
 
 cherami-replicator-server: $(DEPS)
-	go build -i $(EMBED) -o cherami-replicator-server cmd/replicator/main.go
+	$(GOBUILD) -o cherami-replicator-server cmd/replicator/main.go
 
 cherami-cli: $(DEPS)
-	go build -i -o cherami-cli cmd/tools/cli/main.go
+	$(GOBUILD) -o cherami-cli cmd/tools/cli/main.go
 
 cherami-admin: $(DEPS)
-	go build -i -o cherami-admin cmd/tools/admin/main.go
+	$(GOBUILD) -o cherami-admin cmd/tools/admin/main.go
 
 cherami-replicator-tool: $(DEPS)
-	go build -i -o cherami-replicator-tool cmd/tools/replicator/main.go
+	$(GOBUILD)  -o cherami-replicator-tool cmd/tools/replicator/main.go
 
 cherami-cassandra-tool: $(DEPS)
-	go build -i -o cherami-cassandra-tool cmd/tools/cassandra/main.go
+	$(GOBUILD) -o cherami-cassandra-tool cmd/tools/cassandra/main.go
 
 cherami-store-tool: $(DEPS)
-	go build -i $(EMBED) -o cherami-store-tool cmd/tools/store/main.go
+	$(GOBUILD) -o cherami-store-tool cmd/tools/store/main.go
 
 cdb: $(DEPS)
-	go build -i $(EMBED) -o cdb cmd/tools/cdb/*.go
+	$(GOBUILD) -o cdb cmd/tools/cdb/*.go
 
 cmq: $(DEPS)
-	go build -i $(EMBED) -o cmq cmd/tools/cmq/*.go
+	$(GOBUILD) -o cmq cmd/tools/cmq/*.go
 
 bins: cherami-server cherami-replicator-server cherami-cli cherami-admin cherami-replicator-tool cherami-cassandra-tool cherami-store-tool cdb cmq
 
@@ -108,14 +107,14 @@ cover_profile: lint bins
 	@echo Running integration tests:
 	@time for dir in $(INTEG_TEST_DIRS); do \
 		mkdir -p $(BUILD)/"$$dir"; \
-		go test $(EMBED) "$$dir" $(TEST_ARG) $(GOCOVERPKG_ARG) -coverprofile=$(BUILD)/"$$dir"/coverage.out || exit 1; \
+		$(GOTEST) "$$dir" $(TEST_ARG) $(GOCOVERPKG_ARG) -coverprofile=$(BUILD)/"$$dir"/coverage.out || exit 1; \
 		cat $(BUILD)/"$$dir"/coverage.out | grep -v "mode: atomic" >> $(BUILD)/cover.out; \
 	done
 
 	@echo Running tests:
 	@time for dir in $(PKG_TEST_DIRS); do \
 		mkdir -p $(BUILD)/"$$dir"; \
-		go test $(EMBED) "$$dir" $(TEST_ARG) -coverprofile=$(BUILD)/"$$dir"/coverage.out || exit 1; \
+		$(GOTEST) "$$dir" $(TEST_ARG) -coverprofile=$(BUILD)/"$$dir"/coverage.out || exit 1; \
 		cat $(BUILD)/"$$dir"/coverage.out | grep -v "mode: atomic" >> $(BUILD)/cover.out; \
 	done
 
@@ -142,7 +141,7 @@ lint:
 		echo "$$OUTPUT"; \
 		exit 1; \
 	fi
-	@go tool vet -all -printfuncs=Info,Infof,Debug,Debugf,Warn,Warnf,Panic,Panicf $(ALL_TEST_DIRS)
+	@CGO_CFLAGS=$(CGO_CFLAGS) CGO_LDFLAGS=$(CGO_LDFLAGS) CGO_ENABLED=1 go vet -all -printfuncs=Info,Infof,Debug,Debugf,Warn,Warnf,Panic,Panicf $(ALL_TEST_DIRS)
 
 fmt:
 	@gofmt -w $(ALL_SRC)
